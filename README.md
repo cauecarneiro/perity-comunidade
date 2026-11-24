@@ -1,6 +1,11 @@
-# Perity — controle financeiro pessoal (código aberto)
+# Perity
 
-Quanto você tem em conta, quanto deve no cartão, o que falta pagar no mês e quanto seus investimentos renderam.
+Controle financeiro pessoal em SwiftUI para iPhone e Mac: quanto você tem em conta, quanto deve no cartão, o que falta pagar no mês e quanto seus investimentos renderam. Versão aberta, feita para quem programa.
+
+Projeto pessoal · iOS 17+ e macOS 14+ · 2026
+
+[Página no portfólio](https://cauecarneiro.github.io/portfolio/perity.html)
+
 App nativo **SwiftUI para iPhone e Mac**, feito para **uso pessoal de quem programa**: você compila, coloca as
 **suas** chaves e conecta os **seus** bancos. Seus dados ficam no seu aparelho (e, se quiser, no seu iCloud).
 Não existe servidor, conta nem coleta de dados.
@@ -24,7 +29,7 @@ Todas com os dados de exemplo que vêm no app (fictícios).
 
 ![Investimentos no Mac](docs/telas/mac-investimentos.jpg)
 
-## O que ele faz
+## O que faz
 
 - **Início (o macro):** saldo somado das contas, faturas somadas dos cartões, gastos do mês e fixos a pagar.
   Cada número abre o seu detalhe (o micro). Embaixo: um aviso, o que vence em breve e os últimos lançamentos.
@@ -64,7 +69,23 @@ Duas conexões vão para a internet em qualquer uso, e uma terceira só existe s
 Não há analytics, anúncios nem servidor do projeto. (Dois links em Ajustes, `meu.pluggy.ai` e `dashboard.pluggy.ai`, só abrem
 no navegador quando você toca neles.)
 
-## Começar (visão geral)
+## Meu papel
+
+Projeto solo. Eu especifiquei, orquestrei os agentes de IA que ajudaram a escrever o código, revisei e medi o resultado. O repositório tem um único commit, de Cauê Carneiro, com a versão aberta.
+
+## Como foi feito
+
+- **Núcleo separado da interface:** o pacote Swift `Prumo/PrumoCore` guarda modelos, cliente da Pluggy, categorização, conciliação, análises, importador e dados de exemplo. Não tem UI e roda com `swift test`, sem simulador.
+- **Telas compartilhadas:** `Prumo/App/Shared` tem as telas SwiftUI, o estado global e os App Intents; `Prumo/App/macOS` tem o ícone na barra de menus.
+- **Dados compatíveis com CloudKit:** SwiftData sem `@Attribute(.unique)` e sem relacionamentos (ligações por texto, como `contaID`). Dinheiro é sempre `Int` em centavos, nunca `Double`.
+- **Regras que evitam número errado:** transferências, pagamento de fatura e aportes ficam fora de gasto e renda; a conciliação casa compras do Apple Pay com o extrato do banco; a sincronização repetida não duplica lançamentos. Detalhes em [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
+- **Projeto gerado:** o `.xcodeproj` nunca é versionado; o `Prumo/project.yml` (XcodeGen) o gera.
+
+## Tecnologias
+
+Swift, SwiftUI, SwiftData, CloudKit, WidgetKit, App Intents, Keychain, XcodeGen, Swift Package Manager, XCTest.
+
+## Como rodar
 
 Você precisa de um Mac com Xcode 26 ou mais novo (o código usa APIs do SDK do iOS 26 e macOS 26, mas roda a partir do iOS 17 e do macOS 14), [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 (`brew install xcodegen`) e uma conta Apple (gratuita serve para rodar no seu aparelho; veja os limites abaixo).
@@ -124,3 +145,6 @@ Detalhes e como reportar falhas: [SECURITY.md](SECURITY.md).
 ## Licença
 
 [MIT](LICENSE). O uso da API da Pluggy segue os termos e planos da própria Pluggy, que não fazem parte desta licença.
+
+---
+Feito por Cauê Crillanovick · [portfólio](https://cauecarneiro.github.io/portfolio/) · [LinkedIn](https://www.linkedin.com/in/cau%C3%AA-carneiro)
